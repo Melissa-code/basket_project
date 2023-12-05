@@ -23,7 +23,7 @@
 				{% for brand in brands %}
 					<tr>
 						<td>{{ brand.name }}</td>
-						<td>{{ brand.createdAt|date("m/d/Y") }}</td>
+						<td>{{ brand.createdAt|date("d/m/Y") }}</td>
 						<td>{{ brand.logo }}</td>
 						<td>
 							<a href="{{ path('app_brand', {'id': brand.id}) }}">Afficher</a>

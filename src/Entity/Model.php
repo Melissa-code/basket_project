@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ModelRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[UniqueEntity('name')]
 #[ORM\Entity(repositoryClass: ModelRepository::class)]
 class Model
 {
@@ -13,9 +16,17 @@ class Model
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 150,
+        minMessage: 'Le nom doit avoir au moins {{ limit }} caractères.',
+        maxMessage: 'Le nom ne doit pas dépasser {{ limit }} caractères.',
+    )]
     #[ORM\Column(length: 150)]
     private ?string $name = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column]
     private ?float $price = null;
 
