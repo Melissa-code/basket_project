@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail d'une marque{% endblock %}
+
+{% block body %}
+    <section class="title">
+		<h1 class=" text-center">{{ brand.name }}</h1>
+        <p class=" text-center">Créée le {{ brand.createdAt|date("m/d/Y") }}</p>
+	</section>
+
+    {# Update form for a brand #}
+    <section class="update-form my-4">
+        <div class="row d-flex justify-content-center">
+            <div class="col-12 border p-3 rounded">
+                <h2 class="text-center" style="font-size:24px;">Modifier une marque</h2>
+                {{ form(update) }}  
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

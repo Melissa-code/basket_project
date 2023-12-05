@@ -26,7 +26,7 @@
 						<td>{{ brand.createdAt|date("m/d/Y") }}</td>
 						<td>{{ brand.logo }}</td>
 						<td>
-							<a href="">Afficher</a>
+							<a href="{{ path('app_brand', {'id': brand.id}) }}">Afficher</a>
 						</td>
 						<td>
 							<a href="">Supprimer</a>
@@ -47,7 +47,7 @@
     {# Add form for the brands #}
     <section class="add-form my-4">
         <div class="row d-flex justify-content-center">
-            <div class="col-md-6 border p-3 rounded">
+            <div class="col-12 border p-3 rounded">
                 <h2 class="text-center" style="font-size:24px;">Créer une marque</h2>
                 {# Add form #}
                 {{ form(add_form) }}    
