@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/marques')]
 class BrandController extends AbstractController
@@ -25,6 +27,23 @@ class BrandController extends AbstractController
         $form = $this->createForm(BrandType::class, $brand); 
         $form->handleRequest($request); 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Manage the upload of the logo
+            $imageFile = $form->get('logo')->getData();
+            if ($imageFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $imageFile->move(
+                        $this->getParameter('upload_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Impossible d\'ajouter le logo.'); 
+                }
+                $brand->setLogo($newFilename);
+            }
+
             $em->persist($brand); 
             $em->flush(); 
 
