@@ -115,4 +115,13 @@ class Brand
 
         return $this;
     }
+
+    #[ORM\PostRemove]
+    public function deleteLogo()
+    {
+        if ($this->logo != null) {
+            unlink(__DIR__.'/../../public/uploads/'.$this->logo);
+        }
+        return true; 
+    }
 }
