@@ -1,10 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modèles{% endblock %}
+{% block title %} Modèles {% endblock %}
 
 {% block body %}
     <section class="title">
-        <h1 class="my-4 text-center">Liste des modèles</h1>
+        <h1 class="my-4 text-center">Les modèles</h1>
+    </section>
+
+    {# List of the models #}
+    <section class="list ">
+        {% if models is not empty %}
+		<table class="table table-striped border my-3">
+			<thead>
+				<tr>
+					<th scope="col">Nom</th>
+					<th scope="col">Prix</th>
+					<th scope="col">Marque</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for model in models %}
+					<tr>
+						<td>{{ model.name }}</td>
+						<td>{{ model.price }} €</td>
+						<td>{{ model.brand.name }}</td>
+						<td>
+							<a href="{{ path('app_model', {'id': model.id}) }}">Afficher</a>
+						</td>
+						<td>
+							<a href="">Supprimer</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+        {% else %}
+            <hr>
+            <p class="text-center" >Aucun modèle à afficher. </p>
+            <hr>
+        {% endif %}
+	</section>
+
+    <hr class="my-4">
+
+    {# Add form for the models #}
+    <section class="add-form my-4">
+        <div class="row d-flex justify-content-center">
+            <div class="col-12 border p-3 rounded">
+                <h2 class="text-center" style="font-size:24px;">Créer un modèle</h2>
+                {{ form(add_form) }}    
+            </div>
+        </div>
     </section>
 
 {% endblock %}
