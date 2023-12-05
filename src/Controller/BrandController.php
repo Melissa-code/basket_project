@@ -6,6 +6,7 @@ use App\Entity\Brand;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\BrandType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,5 +74,29 @@ class BrandController extends AbstractController
             'brand' => $brand, 
             'update' => $form->createView(),
         ]);
+    }
+
+    /**
+     * Delete a brand
+     */
+    #[Route('/delete/{id}', name: 'delete_brand')]
+    public function delete(EntityManagerInterface $em, Brand $brand = null): RedirectResponse
+    {
+        if ($brand == null) {
+            $this->addFlash(
+                'danger',
+                'Marque introuvable!'
+            );
+            return $this->redirectToRoute('app_brands'); 
+        }
+
+        // Remove the brand 
+        $em->remove($brand); //Prepare sauvg
+        $em->flush(); 
+        $this->addFlash(
+            'warning',
+            'Marque supprimée!'
+        );
+        return $this->redirectToRoute('app_brands'); 
     }
 }
