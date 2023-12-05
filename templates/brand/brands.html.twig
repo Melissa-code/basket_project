@@ -1,10 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Marques{% endblock %}
+{% block title %} Marques {% endblock %}
 
 {% block body %}
-<section class="title">
-    <h1 class="my-4 text-center">Liste des marques</h1>
-</section>
+	<section class="title">
+		<h1 class=" text-center">Les marques</h1>
+	</section>
+
+	<section class="list ">
+        {# List of the brands #}
+        {% if brands is not empty %}
+		<table class="table table-striped border my-3">
+			<thead>
+				<tr>
+					<th scope="col">Nom</th>
+					<th scope="col">Date de création</th>
+					<th scope="col">Logo</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for brand in brands %}
+					<tr>
+						<td>{{ brand.name }}</td>
+						<td>{{ brand.createdAt|date("m/d/Y") }}</td>
+						<td>{{ brand.logo }}</td>
+						<td>
+							<a href="">Afficher</a>
+						</td>
+						<td>
+							<a href="">Supprimer</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+        {% else %}
+            <hr>
+            <p class="text-center" >Aucune marque à afficher. </p>
+            <hr>
+        {% endif %}
+	</section>
+
+    <hr class="my-4">
+
+    {# Add form for the brands #}
+    <section class="add-form my-4">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6 border p-3 rounded">
+                <h2 class="text-center" style="font-size:24px;">Créer une marque</h2>
+                {# Add form #}
+                {{ form(add_form) }}    
+            </div>
+        </div>
+    </section>
 
 {% endblock %}
