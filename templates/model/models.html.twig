@@ -29,7 +29,7 @@
 							<a href="{{ path('app_model', {'id': model.id}) }}">Afficher</a>
 						</td>
 						<td>
-							<a href="">Supprimer</a>
+							<a href="{{ path('delete_model', {'id': model.id}) }}">Supprimer</a>
 						</td>
 					</tr>
 				{% endfor %}

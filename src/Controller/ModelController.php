@@ -6,6 +6,7 @@ use App\Entity\Model;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ModelType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ModelController extends AbstractController
 {
     /**
-     * Models
+     * List of the models & create a new model 
      */
     #[Route('/', name: 'app_models')]
     public function models(EntityManagerInterface $em, Request $request): Response
@@ -42,7 +43,7 @@ class ModelController extends AbstractController
         ]);
     }
 
-        /**
+    /**
      * Detail of a model and update a model
      */
     #[Route('/{id}', name: 'app_model')]
@@ -73,5 +74,29 @@ class ModelController extends AbstractController
             'model' => $model, 
             'update' => $form->createView(),
         ]);
+    }
+
+    /**
+     * Delete a model
+     */
+    #[Route('/delete/{id}', name: 'delete_model')]
+    public function delete(EntityManagerInterface $em, Model $model = null): RedirectResponse
+    {
+        if ($model == null) {
+            $this->addFlash(
+                'danger',
+                'Modèle introuvable!'
+            );
+            return $this->redirectToRoute('app_models'); 
+        }
+
+        // Remove the model
+        $em->remove($model); //Prepare sauvg
+        $em->flush(); 
+        $this->addFlash(
+            'warning',
+            'Modèle supprimé!'
+        );
+        return $this->redirectToRoute('app_models'); 
     }
 }
