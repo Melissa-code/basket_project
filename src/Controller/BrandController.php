@@ -27,11 +27,10 @@ class BrandController extends AbstractController
         $form = $this->createForm(BrandType::class, $brand); 
         $form->handleRequest($request); 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Manage the upload of the logo
+            // Upload a logo image
             $imageFile = $form->get('logo')->getData();
             if ($imageFile) {
                 $newFilename = uniqid().'.'.$imageFile->guessExtension();
-
                 // Move the file to the directory where brochures are stored
                 try {
                     $imageFile->move(
@@ -81,6 +80,22 @@ class BrandController extends AbstractController
         $form = $this->createForm(BrandType::class, $brand); 
         $form->handleRequest($request); 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Edit the logo
+            $imageFile = $form->get('logo')->getData();
+            if ($imageFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                // Move the file to the directory where brochures are stored
+                try {
+                    $imageFile->move(
+                        $this->getParameter('upload_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Impossible d\'ajouter le logo.'); 
+                }
+                $brand->setLogo($newFilename);
+            }
+
             $em->persist($brand); 
             $em->flush(); 
             $this->addFlash(
