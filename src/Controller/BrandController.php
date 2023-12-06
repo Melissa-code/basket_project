@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-#[Route('/marques')]
+#[Route('/{_locale}/marques')]
 class BrandController extends AbstractController
 {
     /**
